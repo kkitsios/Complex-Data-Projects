@@ -1,0 +1,5 @@
+\babel@toc {english}{}\relax 
+\contentsline {section}{\numberline {1}\IeC {\textPi }\IeC {\texteta }\IeC {\textgamma }\IeC {\textalpha }\IeC {\'\textiota }\IeC {\textomicron }\IeC {\textvarsigma } \IeC {\textkappa }\IeC {\'\textomega }\IeC {\textdelta }\IeC {\textiota }\IeC {\textkappa }\IeC {\textalpha }\IeC {\textvarsigma }}{3}{section.1}%
+\contentsline {section}{\numberline {2}\IeC {\textMu }\IeC {\'\textepsilon }\IeC {\textrho }\IeC {\textomicron }\IeC {\textvarsigma } 1}{6}{section.2}%
+\contentsline {section}{\numberline {3}\IeC {\textMu }\IeC {\'\textepsilon }\IeC {\textrho }\IeC {\textomicron }\IeC {\textvarsigma } 2}{6}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Equi-width vs Equi-depth histogram}{7}{subsection.3.1}%

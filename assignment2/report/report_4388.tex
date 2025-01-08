@@ -1,0 +1,66 @@
+\documentclass{article}[40pt]
+\usepackage{ucs}
+\usepackage{subcaption}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{grffile}
+\usepackage[utf8x]{inputenc}
+\usepackage[greek,english]{babel}
+\usepackage{xspace}
+\usepackage{alphabeta}
+\usepackage{amssymb}
+\usepackage[colorlinks]{hyperref}
+\usepackage[fleqn]{mathtools}
+\usepackage{adjustbox}
+\usepackage{subcaption}
+\usepackage{xcolor}
+\usepackage{listings}
+\hypersetup{
+    colorlinks=false,% make the links colored
+}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\title{ΠΑΝΕΠΙΣΤΗΜΙΟ ΙΩΑΝΝΙΝΩΝ \\ ΤΜΗΜΑ ΜΗΧΑΝΙΚΩΝ Η/Υ  \&  ΠΛΗΡΟΦΟΡΙΚΗΣ \\  ΜΥΕ041 - ΔΙΑΧΕΙΡΙΣΗ ΣΥΝΘΕΤΩΝ ΔΕΔΟΜΕΝΩΝ \\ ΕΡΓΑΣΙΑ 2}
+\author{Κίτσιος Κωνσταντίνος 4388 }
+\begin{document}
+\maketitle
+\newpage
+\tableofcontents
+\newpage
+\section{Πηγαίος κώδικας}
+Ο πηγαίος κώδικας της εργασίας αποτελέιται από τρία αρχεία. Το αρχείο spatial\_index.py είναι υπεύθυνο για τη δημιουργία του grid και την παραγωγή των αρχείων grid.dir \& grid.grd, γιαυτό και εκτελείται μία φορά (μέρος 1). Το αρχείο selection\_window.py είναι υπεύθυνο για τα ερωτήματα παραθύρου (μέρος 2) και το αρχείο refinement\_step.py είναι υπεύθυνο για το refinement step που πραγματοποιείται μετά από τα ερωτήματα παραθύρου (μέρος 3). Πρακτικά ο κώδικας είναι παρόμοιος με αυτόν του selection\_window.py, απλά για ευκολία και μικρότερα αρχεία μεταφέρθηκε σε ξεχωριστό αρχείο.\\
+Η εκτέλεση του spatial\_index.py γίνεται με την εντολή: python3 spatial\_index.py.\\
+Για την εκτέλεση των selection\_window.py \& refinement\_step.py απαιτείται το queries.txt να βρίσκεται στον ίδιο κατάλογο με τα αρχεία.\\
+Χρησιμοποιείται η εντολή: python3 selection\_window.py, python3 refinement\_step.py
+\newpage
+\section{Μέρος 1}
+Στο πρώτο μέρος (αρχείο spatial\_index.py), αρχικά διαβάζονται τα δεδομένα του dataset, αποθηκεύονται σε ένα λεξικό με κλειδί το id του αντικειμένου και ως τιμή μια πλειάδα με το MBR και το linestring του αντικειμένου. Έπειτα δημιουργείται το grid και τέλος παράγονται τα αρχεία grid.dir \& grid.grd τα οποία θα βοηθήσουν στην ανακατασκευή του grid στο δεύτερο μέρος.
+\section{Μέρος 2}
+Στο δεύτερο μέρος (αρχείο selection\_window.py), χρησιμοποιώντας τα παραγόμενα αρχεία του πρώτου μέρους, ανακατασκευάζεται το αρχικό grid. Παράγονται δύο δομές, ένα λεξικό με κλειδί τις συντεταγμένες του κάθε κελιού και ως τιμή μία λίστα με τα id των object που βρίσκονται στο κελί και ένα λεξικό με κλειδί το id του object και ως τιμή δύο λεξικά, ένα με κλειδί το string 'mbr' και τιμή το mbr του object και ένα με κλειδί το string 'coords' και τιμή το linestring του object. Έπειτα, γίνεται ανάγνωση του αρχείου queries.txt και αποθηκεύονται οι συντεταγμένες του παραθύρου. Στο πρώτο στάδιο ελέγχονται τα κελιά τα οποία τέμνει το παράθυρο και τα αποθηκεύει σε μία δομή και έπειτα για κάθε κελί και για κάθε αντικείμενο ελέγχεται εάν το MBR του τέμνει το παράθυρο. Καθώς μερικά αντικείμενα μπορεί να υπάρχουν ως αντίγραφα σε πάνω από ένα κελιά, μπορεί να καταμετρηθούν πάνω από μία φορά το καθένα στα τελικά αποτελέσματα. Για να το αποφύγουμε αυτό, αναθέτουμε ως σημείο αναφοράς του κάθε αντικειμένου (reference point) το κάτω αριστερά σημείο της τομής του MBR του με το παράθυρο του ερωτήματος. Αυτό το υπολογίζουμε βρίσκοντας τις μέγιστες τιμές για το x και το y από τις ελάχιστες των δύο (MBR και παράθυρο). Στην συνέχεια, κάθε ξεχωριστό αντικείμενο θα αναφέρεται ως αποτέλεσμα μόνο εάν το σημείο αναφοράς του βρίσκεται μέσα στο κελί το οποίο εξετάζεται εκείνη την δεδομένη στιγμή.
+\section{Μέρος 3}
+Το τρίτο μέρος (αρχείο refinement\_step.py) δεν έχει κάποια διαφορετική συνάρτηση από αυτές του αρχείο selection\_window.py, παρά μόνο τις απαραίτητες γραμμές κώδικα για τον έλεγχο του refinement\_step. Ειδικότερα, μετά την εύρεση των αντικειμένων των οποίων το MBR τέμνεται με το παράθυρο επιλογής, για κάθε αντικείμενο, ελέγχουμε εάν το MBR υπερκαλύπτεται από το παράθυρο στον x \& y άξονα (αν υπερκαλύπτεται προστίθεται στο αποτέλεσμα). Αν δεν ισχύει κάποια από αυτες τις περιπτώσεις, έπειτα  προχωράμε σε έλεγχο των μεμονωμένων ευθυγράμμων τμημάτων (line segments) του linestring και να εξετάζουμε αν κάποιο τέμνει τις πλευρές του παραθύρου χρησιμοποιώντας για κάθε ευθύγραμμο τμήμα τα σημεία που το ορίζουν στον x και y άξονα, και εάν υπάρχει τομή τότε το αντικείμενο προστίθεται στο αποτέλεσμα και τέλος τυπώνονται τα ζητούμενα στοιχεία.
+\newpage
+\end{document}
